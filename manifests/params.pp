@@ -6,12 +6,10 @@
 class pip::params {
   case $::osfamily {
     'Debian': {
-      $package_name = 'pip'
-      $service_name = 'pip'
+      $package_name = 'python-pip'
     }
     'RedHat', 'Amazon': {
-      $package_name = 'pip'
-      $service_name = 'pip'
+      $package_name = 'python-pip'
     }
     default: {
       fail("${::operatingsystem} not supported")

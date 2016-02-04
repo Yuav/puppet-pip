@@ -1,7 +1,6 @@
 #! /usr/bin/env ruby
 require 'spec_helper'
 
-parent_provider_class = Puppet::Type.type(:package).provider(:pip)
 provider_class = Puppet::Type.type(:package).provider(:yuavpip)
 #osfamilies = { ['RedHat', '6'] => 'pip-python', ['RedHat', '7'] => 'pip', ['Not RedHat', nil] => 'pip' }
 
@@ -41,10 +40,16 @@ EOS
 
   describe "latest with pip < 1.5" do
 
-    let(:facts) { { :puppet_version => '1.0.1' } }
+    Facter.clear
+    Facter.stubs(:fact).with(:pip_version).returns Facter.add(:pip_version) { setcode { '1.0.1' } }
+    #Facter.expects(:pip_version).returns('1.0.1').once
+
+    #let(:facts) { { :puppet_version => '1.0.1' } }
 
     it "should find a version number for real_package" do
-      Puppet::Type::Package::ProviderPip.expects(:latest).with("real_package").returns('1.3').once
+      parent_provider_class = Puppet::Type.type(:package).provider(:pip)
+      #Puppet::Type::Package::ProviderPip.any_instance.expects(:latest).with("real_package").returns('1.3').once
+      parent_provider_class.any_instance.expects(:latest).with("real_package").returns('1.3').once
       @resource[:name] = "real_package"
       expect(@provider.latest).not_to eq(nil)
     end
@@ -67,7 +72,9 @@ EOS
     # For Pip 1.5 and above, you can get a version list from CLI - which allows for native pip behavior
     # with regards to custom repositories, proxies and the like
 
-    let(:facts) { { :puppet_version => '1.5' } }
+    #let(:facts) { { :puppet_version => '1.5' } }
+    Facter.clear
+    Facter.stubs(:fact).with(:pip_version).returns Facter.add(:pip_version) { setcode { '1.5' } }
 
     it "should find a version number for real_package" do
       Puppet::Util::Execution.expects(:execpipe).with(["/usr/local/bin/pip", "install", "real_package==versionplease"]).yields(real_package_version_io).once

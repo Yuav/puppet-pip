@@ -12,7 +12,6 @@
 #
 class pip (
   $package_name = $::pip::params::package_name,
-  $service_name = $::pip::params::service_name,
 ) inherits ::pip::params {
 
   # validate parameters here

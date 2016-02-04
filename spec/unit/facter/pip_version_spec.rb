@@ -6,7 +6,7 @@ describe Facter::Util::Fact do
   }
 
   let(:output) { <<-EOS
-    pip 8.0.2 from /usr/local/lib/python2.7/dist-packages (python 2.7)
+    pip 8.0.1 from /usr/local/lib/python2.7/dist-packages (python 2.7)
 EOS
   }
 
@@ -16,7 +16,7 @@ EOS
         Facter::Util::Resolution.stubs(:exec)
         Facter::Util::Resolution.expects(:which).with("pip").returns(true)
         Facter::Util::Resolution.expects(:exec).with("pip --version").returns(output)
-        expect(Facter.value(:pip_version)).to eq("8.0.2")
+        expect(Facter.value(:pip_version)).to eq("8.0.1")
       end
     end
 
