@@ -15,14 +15,9 @@ Puppet::Type.type(:package).provide :yuavpip,
 
   def latest
 
-    puts "WORKING?"
-    puts Facter.value(:pip_version)
-    puts Puppet::Util::Package.versioncmp('1.5.0', Facter.value(:pip_version))
-
-    if Puppet::Util::Package.versioncmp('1.5.0', Facter.value(:pip_version)) > 0
+    if Puppet::Util::Package.versioncmp(Facter.value(:pip_version), '1.5.0') == -1 # a < b
       # Pip version lookup not working before pip version 1.5
       # Fall back to PyPI lookup implemented by Puppetlabs
-      puts "SUPER!!!"
       return super
     end
 
