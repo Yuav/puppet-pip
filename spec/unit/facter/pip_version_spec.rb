@@ -6,7 +6,7 @@ describe Facter::Util::Fact do
   }
 
   let(:output) { <<-EOS
-    pip 1.0.1 from /usr/local/lib/python2.7/dist-packages (python 2.7)
+    pip 1.0 from /usr/lib/python2.7/dist-packages (python 2.7)
 EOS
   }
 

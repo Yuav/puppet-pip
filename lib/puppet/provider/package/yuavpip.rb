@@ -15,14 +15,24 @@ Puppet::Type.type(:package).provide :yuavpip,
 
   def latest
 
-    if Puppet::Util::Package.versioncmp(Facter.value(:pip_version), '1.5.0') == -1 # a < b
-      # Pip version lookup not working before pip version 1.5
-      # Fall back to PyPI lookup implemented by Puppetlabs
-      return super
+    # Use CLI to allow for custom PyPI repos, proxies etc.
+    pip_cmd = which(self.class.cmd) or return nil
+
+    if Puppet::Util::Package.versioncmp(Facter.value(:pip_version), '1.5.4') == -1 # a < b
+      Dir.mktmpdir("puppet_pip") do |dir|
+        execpipe ["#{pip_cmd}", "install", "#{@resource[:name]}", "-d", "#{dir}", "-v"] do |process|
+          process.collect do |line|
+            # Using version 0.10.1 (newest of versions: 0.10.1, 0.10, 0.9, 0.8.1, 0.8, 0.7.2, 0.7.1, 0.7, 0.6.1, 0.6, 0.5.2, 0.5.1, 0.5, 0.4, 0.3.1, 0.3, 0.2, 0.1)
+            if line =~ /Using version (.+?) \(newest of versions/
+              return $1
+            end
+          end
+          return nil
+        end
+      end
     end
 
     # Patched latest function also allows for custom PyPi repos.
-    pip_cmd = which(self.class.cmd) or return nil
     execpipe ["#{pip_cmd}", "install", "#{@resource[:name]}==versionplease"] do |process|
       process.collect do |line|
         # Could not find a version that satisfies the requirement Django==versionplease (from versions: 1.1.3, 1.8rc1)

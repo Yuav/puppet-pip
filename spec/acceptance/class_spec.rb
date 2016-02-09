@@ -5,7 +5,10 @@ describe 'pip class' do
     # Using puppet_apply as a helper
     it 'should work idempotently with no errors' do
       pp = <<-EOS
-      class { 'pip': }
+        class {'pip': }
+        package { 'Django':
+          provider => 'yuavpip'
+        }
       EOS
 
       # Run it twice and test for idempotency
@@ -13,13 +16,13 @@ describe 'pip class' do
       apply_manifest(pp, :catch_changes  => true)
     end
 
-    describe package('pip') do
+    describe package('Django') do
       it { is_expected.to be_installed }
     end
 
-    describe service('pip') do
-      it { is_expected.to be_enabled }
-      it { is_expected.to be_running }
-    end
+    #describe service('pip') do
+    #  it { is_expected.to be_enabled }
+    #  it { is_expected.to be_running }
+    #end
   end
 end
