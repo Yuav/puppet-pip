@@ -14,8 +14,10 @@ describe 'pip class' do
 
       # Run it twice and test for idempotency
       apply_manifest(pp, { :catch_failures => true, :debug => true})
-      # FIXME - idempotency test fails due to bash exec cache of pip
-      # Need to issue hash -r somehow in the same shell as serverspec runs after Pip has upgraded
+      # FIXME - drop bash binary path cache using hash -r somehow
+      #puts "#{ ENV['SHELL'] }"
+      #puts "#{ ENV['PATH'] }"
+      #exec("hash -r") # Bash is caching path to old pip
       #apply_manifest(pp, { :catch_changes  => true, :debug => true})
     end
 
@@ -26,5 +28,6 @@ describe 'pip class' do
     describe package('Django') do
       it { should be_installed.by('pip') }
     end
+
   end
 end

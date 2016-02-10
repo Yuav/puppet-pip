@@ -14,7 +14,7 @@ Puppet::Type.type(:package).provide :yuavpip, :parent => :pip do
     # Use CLI to allow for custom PyPI repos, proxies etc.
     pip_cmd = which(self.class.cmd) or return nil
 
-    if Puppet::Util::Package.versioncmp(pip_version, '1.5.4') == -1 # a < b
+    if Puppet::Util::Package.versioncmp(Facter.value(:pip_version), '1.5.4') == -1 # a < b
       Dir.mktmpdir("puppet_pip") do |dir|
         execpipe ["#{pip_cmd}", "install", "#{@resource[:name]}", "-d", "#{dir}", "-v"] do |process|
           process.collect do |line|
@@ -46,15 +46,6 @@ Puppet::Type.type(:package).provide :yuavpip, :parent => :pip do
   def self.instances
     packages = super
     packages << new({:ensure => Facter.value(:pip_version), :name => 'pip', :provider => name})
-  end
-
-  def pip_version
-    pip_cmd = which(self.class.cmd) or return nil
-    execpipe ["#{pip_cmd}", "--version"] do |process|
-      process.collect do |line|
-        return line.strip.match(/^pip (\d+\.\d+\.?\d*).*$/)[1]
-      end
-    end
   end
 
   # Epel package no longer installs python-pip for RHEL6
