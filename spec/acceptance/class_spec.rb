@@ -28,6 +28,5 @@ describe 'pip class' do
     describe package('Django') do
       it { should be_installed.by('pip') }
     end
-
   end
 end
