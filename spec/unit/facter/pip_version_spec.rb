@@ -1,19 +1,21 @@
 require "spec_helper"
 
 describe Facter::Util::Fact do
-  before {
+  before do
     Facter.clear
-  }
+  end
 
-  let(:output) { <<-EOS
+  let(:output) do
+    <<-EOS
     pip 1.0 from /usr/lib/python2.7/dist-packages (python 2.7)
 EOS
-  }
+  end
 
-  let(:output8) { <<-EOS
+  let(:output8) do
+    <<-EOS
     pip 8.0.1 from /usr/local/lib/python2.7/dist-packages (python 2.7)
 EOS
-  }
+  end
 
   describe "pip_version" do
     context 'returns pip version when pip present' do
@@ -21,7 +23,7 @@ EOS
         Facter::Util::Resolution.stubs(:exec)
         Facter::Util::Resolution.expects(:which).with("pip").returns(true)
         Facter::Util::Resolution.expects(:exec).with("pip --version").returns(output)
-        expect(Facter.value(:pip_version)).to eq("1.0.1")
+        expect(Facter.value(:pip_version)).to eq("1.0")
       end
 
       it do
@@ -39,6 +41,5 @@ EOS
         expect(Facter.value(:pip_version)).to eq(nil)
       end
     end
-
   end
 end

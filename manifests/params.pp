@@ -5,14 +5,7 @@
 #
 class pip::params {
   case $::osfamily {
-    'Debian': {
-      $package_name = 'python-pip'
-    }
-    'RedHat', 'Amazon': {
-      $package_name = 'python-pip'
-    }
-    default: {
-      fail("${::operatingsystem} not supported")
-    }
+    'Debian', 'RedHat', 'Amazon' : { $pypi_repo = undef }
+    default : { fail("${::operatingsystem} not supported") }
   }
 }

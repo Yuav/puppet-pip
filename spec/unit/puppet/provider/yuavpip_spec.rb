@@ -4,37 +4,40 @@ require 'spec_helper'
 provider_class = Puppet::Type.type(:package).provider(:yuavpip)
 
 describe provider_class do
-
-  let(:real_package_version_output) { <<-EOS
+  let(:real_package_version_output) do
+    <<-EOS
     Collecting real-package==versionplease
       Could not find a version that satisfies the requirement real-package==versionplease (from versions: 1.1.3, 1.2, 1.9b1)
     No matching distribution found for real-package==versionplease
     EOS
-  }
+  end
 
   let(:real_package_version_io) { StringIO.new(real_package_version_output) }
 
-  let(:fake_package_version_output) { <<-EOS
+  let(:fake_package_version_output) do
+    <<-EOS
     Collecting fake-package==versionplease
       Could not find a version that satisfies the requirement fake-package==versionplease (from versions: )
     No matching distribution found for fake-package==versionplease
     EOS
-  }
+    end
 
   let(:fake_package_version_io) { StringIO.new(fake_package_version_output) }
 
-  let(:real_package_version_pip_1_0) { <<-EOS
+  let(:real_package_version_pip_1_0) do
+    <<-EOS
     Downloading/unpacking fake-package
       Using version 0.10.1 (newest of versions: 0.10.1, 0.10, 0.9, 0.8.1, 0.8, 0.7.2, 0.7.1, 0.7, 0.6.1, 0.6, 0.5.2, 0.5.1, 0.5, 0.4, 0.3.1, 0.3, 0.2, 0.1)
       Downloading real-package-0.10.1.tar.gz (544Kb): 544Kb downloaded
     Saved ./foo/real-package-0.10.1.tar.gz
     Successfully downloaded real-package
     EOS
-  }
+  end
 
   let(:real_package_version_pip_1_0_io) { StringIO.new(real_package_version_pip_1_0) }
 
-  let(:fake_package_version_pip_1_0_output) { <<-EOS
+  let(:fake_package_version_pip_1_0_output) do
+    <<-EOS
   Downloading/unpacking fake-package
     Could not fetch URL http://pypi.python.org/simple/fake_package: HTTP Error 404: Not Found
     Will skip URL http://pypi.python.org/simple/fake_package when looking for download links for fake-package
@@ -56,7 +59,7 @@ describe provider_class do
 
   Storing complete log in /root/.pip/pip.log
     EOS
-  }
+  end
 
   let(:fake_package_version_pip_1_0_io) { StringIO.new(fake_package_version_pip_1_0_output) }
 
@@ -66,9 +69,7 @@ describe provider_class do
   end
 
   describe "latest" do
-
     context "with pip version < 1.5.4" do
-
       before :each do
         Facter.clear
         Facter.stubs(:fact).with(:pip_version).returns Facter.add(:pip_version) { setcode { '1.0' } }
@@ -87,11 +88,9 @@ describe provider_class do
         @resource[:name] = "fake_package"
         expect(@provider.latest).to eq(nil)
       end
-
     end
 
     context "with pip version >= 1.5.4" do
-
       # For Pip 1.5.4 and above, you can get a version list from CLI - which allows for native pip behavior
       # with regards to custom repositories, proxies and the like
 
@@ -114,5 +113,4 @@ describe provider_class do
       end
     end
   end
-
 end

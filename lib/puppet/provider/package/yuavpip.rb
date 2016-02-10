@@ -4,21 +4,17 @@
 require 'puppet/util/package'
 require 'puppet/provider/package/pip'
 
-Puppet::Type.type(:package).provide :yuavpip,
-  :parent => :pip do
-
+Puppet::Type.type(:package).provide :yuavpip, :parent => :pip do
   desc "Python packages via `pip`.
 
   This provider supports the `install_options` attribute, which allows command-line flags to be passed to pip.
   These options should be specified as a string (e.g. '--flag'), a hash (e.g. {'--flag' => 'value'}),
   or an array where each element is either a string or a hash."
-
   def latest
-
     # Use CLI to allow for custom PyPI repos, proxies etc.
     pip_cmd = which(self.class.cmd) or return nil
 
-    if Puppet::Util::Package.versioncmp(Facter.value(:pip_version), '1.5.4') == -1 # a < b
+    if Puppet::Util::Package.versioncmp(pip_version, '1.5.4') == -1 # a < b
       Dir.mktmpdir("puppet_pip") do |dir|
         execpipe ["#{pip_cmd}", "install", "#{@resource[:name]}", "-d", "#{dir}", "-v"] do |process|
           process.collect do |line|
@@ -32,7 +28,7 @@ Puppet::Type.type(:package).provide :yuavpip,
       end
     end
 
-    # Patched latest function also allows for custom PyPi repos.
+    # Less resource intensive approach for pip version 1.5.4 and above
     execpipe ["#{pip_cmd}", "install", "#{@resource[:name]}==versionplease"] do |process|
       process.collect do |line|
         # Could not find a version that satisfies the requirement Django==versionplease (from versions: 1.1.3, 1.8rc1)
@@ -46,4 +42,23 @@ Puppet::Type.type(:package).provide :yuavpip,
     end
   end
 
+  # Pip can also upgrade pip, but it's not listed in freeze so need to special case it
+  def self.instances
+    packages = super
+    packages << new({:ensure => Facter.value(:pip_version), :name => 'pip', :provider => name})
+  end
+
+  def pip_version
+    pip_cmd = which(self.class.cmd) or return nil
+    execpipe ["#{pip_cmd}", "--version"] do |process|
+      process.collect do |line|
+        return line.strip.match(/^pip (\d+\.\d+\.?\d*).*$/)[1]
+      end
+    end
+  end
+
+  # Epel package no longer installs python-pip for RHEL6
+  def self.cmd
+    "pip"
+  end
 end

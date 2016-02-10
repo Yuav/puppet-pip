@@ -3,13 +3,24 @@
 # This class is called from pip for install.
 #
 class pip::install {
-  # Get latest PIP version which supports custom PyPI repo
-  #exec { 'install_pip':
-  #  command => '/usr/bin/curl --silent --show-error --retry 5 https://bootstrap.pypa.io/get-pip.py | /usr/bin/sudo python2.7 && hash -r',
-  #  unless  => 'which pip && pip --version | grep -F 7.',
-  #  path    => ['/bin', '/sbin', '/usr/bin', '/usr/sbin', '/usr/local/bin', '/usr/local/sbin'],
-  #  require => [Package['python-dev'], Package['curl']],
-  #}
+  if (!defined(Package['python-pip'])) {
+    package { 'python-pip': ensure => 'present', }
 
-  package { $::pip::package_name: ensure => present, }
+    if ::osfamily == 'RedHat' {
+      # Include repo for RHEL distros which include the pip package
+      class { '::epel': }
+
+      Package <| title == 'python-pip' |> {
+        require => Class['epel'],
+      }
+    }
+  }
+
+  # Upgrade pip using pip
+  package { 'pip':
+    ensure   => 'latest',
+    provider => 'yuavpip',
+    require  => Package['python-pip'],
+  }
+
 }

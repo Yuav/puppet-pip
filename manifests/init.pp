@@ -11,10 +11,8 @@
 #   e.g. "Specify one or more upstream ntp servers as an array."
 #
 class pip (
-  $package_name = $::pip::params::package_name,
+  $pypi_repo = $::pip::params::pypi_repo,
 ) inherits ::pip::params {
-
-  # validate parameters here
 
   class { '::pip::install': } ->
   class { '::pip::config': } ->

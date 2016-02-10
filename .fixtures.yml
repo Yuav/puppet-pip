@@ -1,5 +1,6 @@
 fixtures:
-  repositories:
-    stdlib: "https://github.com/puppetlabs/puppetlabs-stdlib.git"
+  forge_modules:
+    stdlib: "puppetlabs/stdlib"
+    epel: "stahnma/epel"
   symlinks:
     pip: "#{source_dir}"

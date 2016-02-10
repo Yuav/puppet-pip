@@ -8,7 +8,8 @@
   "project_page": "https://github.com/Yuav/puppet-pip",
   "issues_url": "https://github.com/Yuav/puppet-pip/issues",
   "dependencies": [
-    {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"}
+    { "name": "stahnma-epel", "version_requirement": ">= 1.0.0" },
+    { "name": "puppetlabs/stdlib", "version_requirement": ">= 3.0.0" }
   ],
   "operatingsystem_support": [
     {
