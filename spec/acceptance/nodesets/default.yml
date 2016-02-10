@@ -1,20 +1,16 @@
 HOSTS:
-    ubuntu-1404-x64:
+    centos-7-x64:
         roles:
-         - master
-        platform: ubuntu-14.04-x64
-        image: ubuntu-upstart:14.04
+        - database
+        platform: el-7-x86_64
+        image: milcom/centos7-systemd
         hypervisor: docker
-        docker_cmd: '["/sbin/init"]'
+        docker_cmd: '["/usr/sbin/init"]'
+        docker_image_commands:
+        - 'yum install -y wget tar hostname initscripts ntpdate rubygems ruby-augeas ruby-devel augeas-devel'
+        - 'touch /etc/sysconfig/network'
         docker_preserve_image: true
-        docker_image_commands: 
-         - wget --no-check-certificate https://apt.puppetlabs.com/puppetlabs-release-trusty.deb
-         - apt-get install -y wget ca-certificates
-         - dpkg -i puppetlabs-release-trusty.deb
-         - apt-get update
-         - apt-get -y install puppet curl ntpdate git ruby
-         - "sed --in-place=.bak 's/without-password/yes/' /etc/ssh/sshd_config"
-
+        
 CONFIG:
-    log_level: verbose
-    type: foss
+  log_level: verbose
+  type: foss

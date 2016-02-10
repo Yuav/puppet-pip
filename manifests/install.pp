@@ -6,8 +6,11 @@ class pip::install {
   if (!defined(Package['python-pip'])) {
     package { 'python-pip': ensure => 'present', }
 
-    if ::osfamily == 'RedHat' {
-      # Include repo for RHEL distros which include the pip package
+    Package <| title == 'pip' |> {
+      require => Package['python-pip'],
+    }
+
+    if $::osfamily == 'RedHat' {
       class { '::epel': }
 
       Package <| title == 'python-pip' |> {
@@ -20,7 +23,6 @@ class pip::install {
   package { 'pip':
     ensure   => 'latest',
     provider => 'yuavpip',
-    require  => Package['python-pip'],
   }
 
 }

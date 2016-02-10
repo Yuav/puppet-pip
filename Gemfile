@@ -9,7 +9,7 @@ group :test do
   gem "metadata-json-lint"
   gem "rspec-puppet-facts"
   gem "ci_reporter_rspec"
-  gem 'rubocop', '0.33.0'
+  gem 'rubocop', '0.33.0',                                         :require => false
   gem 'simplecov', '>= 0.11.0'
   gem 'simplecov-console'
 
