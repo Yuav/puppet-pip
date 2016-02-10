@@ -45,6 +45,7 @@ Puppet::Type.type(:package).provide :yuavpip, :parent => :pip do
   # Pip can also upgrade pip, but it's not listed in freeze so need to special case it
   def self.instances
     packages = super
+    # Pip list would also show pip installed version, but pip list doesn't exist for pip v1.0
     packages << new({:ensure => Facter.value(:pip_version), :name => 'pip', :provider => name})
   end
 
