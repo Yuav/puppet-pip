@@ -437,6 +437,7 @@ DEPENDENCIES
   puppet-lint-version_comparison-check
   puppetlabs_spec_helper
   rake
+  rspec (< 3.2.0)
   rspec-puppet
   rspec-puppet-facts
   rubocop (= 0.33.0)
