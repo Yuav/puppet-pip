@@ -15,7 +15,7 @@ describe 'pip class' do
       # Run it twice and test for idempotency
       apply_manifest(pp, { :catch_failures => true, :debug => true})
       apply_manifest(pp, {
-        :catch_changes  => true,
+        :catch_changes => true,
         :debug => true,
         :environment => {
           # Workaround for bug: https://tickets.puppetlabs.com/browse/BKR-699

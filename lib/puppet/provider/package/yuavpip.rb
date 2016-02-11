@@ -11,22 +11,29 @@ Puppet::Type.type(:package).provide :yuavpip, :parent => :pip do
   These options should be specified as a string (e.g. '--flag'), a hash (e.g. {'--flag' => 'value'}),
   or an array where each element is either a string or a hash."
   def latest
+    if Puppet::Util::Package.versioncmp(Facter.value(:pip_version), '1.5.4') == -1 # a < b
+      return latest_with_old_pip
+    end
+    latest_with_new_pip
+  end
+
+  # Pip can also upgrade pip, but it's not listed in freeze so need to special case it
+  def self.instances
+    packages = super
+    # Pip list would also show pip installed version, but pip list doesn't exist for pip v1.0
+    packages << new({:ensure => Facter.value(:pip_version), :name => 'pip', :provider => name})
+  end
+
+  # Epel package no longer installs python-pip for RHEL6
+  def self.cmd
+    "pip"
+  end
+
+  private
+
+  def latest_with_new_pip
     # Use CLI to allow for custom PyPI repos, proxies etc.
     pip_cmd = which(self.class.cmd) or return nil
-
-    if Puppet::Util::Package.versioncmp(Facter.value(:pip_version), '1.5.4') == -1 # a < b
-      Dir.mktmpdir("puppet_pip") do |dir|
-        execpipe ["#{pip_cmd}", "install", "#{@resource[:name]}", "-d", "#{dir}", "-v"] do |process|
-          process.collect do |line|
-            # Using version 0.10.1 (newest of versions: 0.10.1, 0.10, 0.9, 0.8.1, 0.8, 0.7.2, 0.7.1, 0.7, 0.6.1, 0.6, 0.5.2, 0.5.1, 0.5, 0.4, 0.3.1, 0.3, 0.2, 0.1)
-            if line =~ /Using version (.+?) \(newest of versions/
-              return $1
-            end
-          end
-          return nil
-        end
-      end
-    end
 
     # Less resource intensive approach for pip version 1.5.4 and above
     execpipe ["#{pip_cmd}", "install", "#{@resource[:name]}==versionplease"] do |process|
@@ -42,15 +49,20 @@ Puppet::Type.type(:package).provide :yuavpip, :parent => :pip do
     end
   end
 
-  # Pip can also upgrade pip, but it's not listed in freeze so need to special case it
-  def self.instances
-    packages = super
-    # Pip list would also show pip installed version, but pip list doesn't exist for pip v1.0
-    packages << new({:ensure => Facter.value(:pip_version), :name => 'pip', :provider => name})
-  end
+  def latest_with_old_pip
+    # Use CLI to allow for custom PyPI repos, proxies etc.
+    pip_cmd = which(self.class.cmd) or return nil
 
-  # Epel package no longer installs python-pip for RHEL6
-  def self.cmd
-    "pip"
+    Dir.mktmpdir("puppet_pip") do |dir|
+      execpipe ["#{pip_cmd}", "install", "#{@resource[:name]}", "-d", "#{dir}", "-v"] do |process|
+        process.collect do |line|
+          # Using version 0.10.1 (newest of versions: 0.10.1, 0.10, 0.9, 0.8.1, 0.8, 0.7.2, 0.7.1, 0.7, 0.6.1, 0.6, 0.5.2, 0.5.1, 0.5, 0.4, 0.3.1, 0.3, 0.2, 0.1)
+          if line =~ /Using version (.+?) \(newest of versions/
+            return $1
+          end
+        end
+        return nil
+      end
+    end
   end
 end
