@@ -14,10 +14,14 @@ describe 'pip class' do
 
       # Run it twice and test for idempotency
       apply_manifest(pp, { :catch_failures => true, :debug => true})
-      shell('hash -r') # Clear pip path cache from Bash shell
-      shell('echo $PATH')
-      shell('which -a pip') # Verify PIP path
-      apply_manifest(pp, { :catch_changes  => true, :debug => true})
+      apply_manifest(pp, {
+        :catch_changes  => true,
+        :debug => true,
+        :environment => {
+          # Workaround for bug: https://tickets.puppetlabs.com/browse/BKR-699
+          'PATH' => '/opt/puppet-git-repos/hiera/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games'
+        }
+      })
     end
 
     describe package('python-pip') do
