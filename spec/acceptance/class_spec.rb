@@ -15,6 +15,7 @@ describe 'pip class' do
       # Run it twice and test for idempotency
       apply_manifest(pp, { :catch_failures => true, :debug => true})
       shell('hash -r') # Clear pip path cache from Bash shell
+      shell('echo $PATH')
       shell('which -a pip') # Verify PIP path
       apply_manifest(pp, { :catch_changes  => true, :debug => true})
     end
