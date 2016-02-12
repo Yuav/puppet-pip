@@ -5,7 +5,7 @@ describe 'pip class' do
     # Using puppet_apply as a helper
     it 'should work idempotently with no errors' do
       pp = <<-EOS
-        class {'pip': }
+        class { 'pip': }
         package { 'Django':
           provider => 'yuavpip',
           require => Class['pip'],
@@ -28,8 +28,9 @@ describe 'pip class' do
       it { is_expected.to be_installed }
     end
 
-    describe package('Django') do
-      it { should be_installed.by('pip') }
-    end
+    # Serverspec test is broken for pip 1.0, since it doesn't have `pip list` command
+    #describe package('Django') do
+    #  it { should be_installed.by('pip') }
+    #end
   end
 end

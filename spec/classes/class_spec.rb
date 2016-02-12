@@ -15,7 +15,7 @@ describe 'pip' do
           it { is_expected.to contain_class('pip::install').that_comes_before('pip::config') }
           it { is_expected.to contain_class('pip::config') }
 
-          it { is_expected.to contain_package('pip').with_ensure('latest') }
+          it { is_expected.to contain_package('pip').with_ensure('installed') }
         end
       end
     end

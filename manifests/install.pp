@@ -21,7 +21,7 @@ class pip::install {
 
   # Upgrade pip using pip
   package { 'pip':
-    ensure   => 'latest',
+    ensure   => $::pip::package_ensure,
     provider => 'yuavpip',
   }
 
