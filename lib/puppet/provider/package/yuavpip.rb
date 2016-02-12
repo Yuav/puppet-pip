@@ -38,7 +38,7 @@ Puppet::Type.type(:package).provide :yuavpip, :parent => :pip do
     # Less resource intensive approach for pip version 1.5.4 and above
     execpipe ["#{pip_cmd}", "install", "#{@resource[:name]}==versionplease"] do |process|
       process.collect do |line|
-        # Could not find a version that satisfies the requirement Django==versionplease (from versions: 1.1.3, 1.8rc1)
+        # PIP OUTPUT: Could not find a version that satisfies the requirement Django==versionplease (from versions: 1.1.3, 1.8rc1)
         if line =~ /from versions: /
           textAfterLastMatch = $'
           versionList = textAfterLastMatch.chomp(")\n").split(', ')
@@ -56,7 +56,7 @@ Puppet::Type.type(:package).provide :yuavpip, :parent => :pip do
     Dir.mktmpdir("puppet_pip") do |dir|
       execpipe ["#{pip_cmd}", "install", "#{@resource[:name]}", "-d", "#{dir}", "-v"] do |process|
         process.collect do |line|
-          # Using version 0.10.1 (newest of versions: 0.10.1, 0.10, 0.9, 0.8.1, 0.8, 0.7.2, 0.7.1, 0.7, 0.6.1, 0.6, 0.5.2, 0.5.1, 0.5, 0.4, 0.3.1, 0.3, 0.2, 0.1)
+          # PIP OUTPUT: Using version 0.10.1 (newest of versions: 0.10.1, 0.10, 0.9, 0.8.1, 0.8, 0.7.2, 0.7.1, 0.7, 0.6.1, 0.6, 0.5.2, 0.5.1, 0.5, 0.4, 0.3.1, 0.3, 0.2, 0.1)
           if line =~ /Using version (.+?) \(newest of versions/
             return $1
           end
