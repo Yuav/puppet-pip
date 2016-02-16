@@ -21,16 +21,21 @@ describe 'pip' do
     end
   end
 
-  context 'unsupported operating system' do
-    describe 'pip class without any parameters on Solaris/Nexenta' do
-      let(:facts) do
-        {
-          :osfamily        => 'Solaris',
-          :operatingsystem => 'Nexenta',
-        }
-      end
+  describe "empty global config without pypi repo argument" do
+    it { is_expected.to contain_file('/etc/pip.conf').with_content(/^# File Managed by Puppet$/) }
+  end
 
-      it { expect { is_expected.to contain_package('pip') }.to raise_error(Puppet::Error, /Nexenta not supported/) }
+  describe "should honor parameters" do
+    let(:params) do
+      {
+        :pypi_repo => 'http://devpi.fqdn:3141/repo/base/+simple/',
+        :package_ensure => 'latest'
+      }
+    end
+    it { is_expected.to contain_package('pip').with_ensure('latest') }
+    it do
+      is_expected.to contain_file('/etc/pip.conf') \
+        .with_content("# File Managed by Puppet\n[global]\ntrusted-host = devpi.fqdn\nindex-url = http://devpi.fqdn:3141/repo/base/+simple/\n")
     end
   end
 end

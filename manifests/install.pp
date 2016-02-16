@@ -19,7 +19,7 @@ class pip::install {
     }
   }
 
-  # Upgrade pip using pip
+  # Upgrades pip using pip
   package { 'pip':
     ensure   => $::pip::package_ensure,
     provider => 'yuavpip',

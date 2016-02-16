@@ -1,1 +1,5 @@
-# File Managed by Puppet
+# File Managed by Puppet<% if scope['pip::pypi_repo'] != :undef %>
+[global]
+trusted-host = <%= URI("#{scope['pip::pypi_repo']}").host %>
+index-url = <%= scope['pip::pypi_repo'] %>
+<% end %>

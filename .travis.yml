@@ -1,10 +1,14 @@
----
 language: ruby
 sudo: true
 cache: bundler
-bundler_args: --without development system_tests
+bundler_args: "--without development system_tests"
 before_install: rm Gemfile.lock || true
-script: ["bundle exec rake syntax", "bundle exec rake lint", "bundle exec rake spec SPEC_OPTS='--format documentation'", "bundle exec rake metadata_lint", "bundle exec rake rubocop"]
+script:
+- bundle exec rake syntax
+- bundle exec rake lint
+- bundle exec rake spec SPEC_OPTS='--format documentation'
+- bundle exec rake metadata_lint
+- bundle exec rake rubocop
 matrix:
   fast_finish: true
   include:
@@ -21,42 +25,51 @@ matrix:
     dist: trusty
     services: docker
     env: BEAKER_set="ubuntu-1204"
-    bundler_args:
+    bundler_args: 
     script: sudo service docker restart ; sleep 10 && bundle exec rspec spec/acceptance/*_spec.rb
   - rvm: default
     sudo: required
     dist: trusty
     services: docker
     env: BEAKER_set="ubuntu-1404"
-    bundler_args:
+    bundler_args: 
     script: sudo service docker restart ; sleep 10 && bundle exec rspec spec/acceptance/*_spec.rb
   - rvm: default
     sudo: required
     dist: trusty
     services: docker
     env: BEAKER_set="debian-7"
-    bundler_args:
+    bundler_args: 
     script: sudo service docker restart ; sleep 10 && bundle exec rspec spec/acceptance/*_spec.rb
   - rvm: default
     sudo: required
     dist: trusty
     services: docker
     env: BEAKER_set="debian-8"
-    bundler_args:
+    bundler_args: 
     script: sudo service docker restart ; sleep 10 && bundle exec rspec spec/acceptance/*_spec.rb
   - rvm: default
     sudo: required
     dist: trusty
     services: docker
     env: BEAKER_set="centos-6"
-    bundler_args:
+    bundler_args: 
     script: sudo service docker restart ; sleep 10 && bundle exec rspec spec/acceptance/*_spec.rb
   - rvm: default
     sudo: required
     dist: trusty
     services: docker
     env: BEAKER_set="centos-7"
-    bundler_args:
+    bundler_args: 
     script: sudo service docker restart ; sleep 10 && bundle exec rspec spec/acceptance/*_spec.rb
 notifications:
   email: true
+deploy:
+  provider: puppetforge
+  user: yuav
+  password:
+    secure: NvEJ9Z26V9bb3S1cooaAWg/M01nD12rAVkbMKITbYtN8jN7vOFNPVRggkUmsCaPLbw19/MGpvwzWdyhyJS8+gMaGTZagffVCOViYv37XVKwz8gZ7CnA5IYOxmKGO+SmWa6oiTbkcN/Q1/IkUY620mFkeGR9/9lPhwle+FZqr6MpLWgcnYACqDmfdCnJI+iBuBIY6BsnYfUOgQdrfCUSchANvMx5u7yjSkk6xhV/ocuqI0aeIJ+Ld5PBH0T73slnfOAH2ufAfjZkqJPK/nFZns+uMNPRIxv1+qu5boA7HAEfXHRGpOJLidF8Z+lCXRH0WM9qNZybScXBqLcUqakhDO2X1xCcnx7OD8SMtz6ojoAlc23fBLl50qz3DFEPB+49t0PlSuFRtLC5fkX2iIceaYG3z0GoaaC8X30uWP1aN82MBEkHP3qdnzYW50rDkuwh5wGUFPjsqfaabJA+bX7vAeRSi2A6GGD4kNhWr8BxYYOrmMrmbhQB5rihFlGhO+xlcXGn3CoZHAU0Mvtp+kfvSvcGVphr9AGif+elwPdtgoUUnclLzYE1vmqNCqyaK284aaci4h3+k2kFtE6CcDlFm32tg/KPzq96OKsxvHuj4fk7DQdcBqK5AmaSh/cvbOa4mDGIoxY3hKChLTecPSzmlygUr3cwKs311Qd/9thyoSNk=
+  on:
+    tags: true
+    all_branches: true
+    rvm: 2.1.7
