@@ -1,3 +1,8 @@
+Puppet Pip module
+=================
+
+[![Build Status](https://travis-ci.org/Yuav/puppet-pip.svg)](https://travis-ci.org/yuav/puppet-pip)
+
 #### Table of Contents
 
 1. [Overview](#overview)
@@ -18,7 +23,7 @@ The pip provider in Puppet is currently broken due to the fact that it's polling
 
 Installing this modules gives you a pip provider that works with;
 
- * Custom PyPI repositories
+ * Custom global PyPI repositories (since Pip 6.0)
  * Ensure latest
  * Proxies
  * Treat pip as a pip installable package
@@ -48,10 +53,34 @@ and use it as a custom provider
       provider => 'yuavpip',
     }
 
-*Note that pip needs to be installed prior to using this provider. Use a require statement to ensure correct order
+*Note that pip needs to be installed prior to using this provider.
 
 ## Usage
 
 To have pip installed using this module
 
     class { 'pip': }
+
+Ensure pip is installed with the latest version
+
+    class { 'pip':
+      package_ensure => 'latest',
+    }
+
+Using a custom global PyPI repo
+
+    class { 'pip':
+      package_ensure => 'latest',
+      pypi_repo => 'http://devpi.fqdn:3141/repo/base/+simple/',
+    }
+
+    package { 'my_package':
+      ensure => 'latest',
+      provider => 'yuavpip',
+      require => Class['pip'], # Ensure custom repo is installed prior to my_package
+    }
+
+
+*Note: By default this module use the vendor version of pip (E.G 1.0 for Ubuntu 12.04),
+however global PyPI repo requires pip 6.0 or later. Since Puppet doesn't support ensure '>6.0',
+use 'latest' to ensure a recent enough version
