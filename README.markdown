@@ -15,7 +15,7 @@ Puppet Pip module
 
 ## Overview
 
-Working Puppet package provider for pip. Can also install and configure pip
+Less broken Puppet package provider for pip. Can also install and configure pip
 
 ## Module Description
 
