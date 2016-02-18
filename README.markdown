@@ -36,7 +36,7 @@ Installing this modules gives you a pip provider that works with;
 * This is a great place to stick any warnings.
 * Can be in list or paragraph form.
 
-### Setup Requirements **OPTIONAL**
+### Setup Requirements
 
 If you don't use this module to manage python pip, it assumes pip is already installed and available in $PATH
 
@@ -49,7 +49,7 @@ Just install the module:
 and use it as a custom provider
 
     package { 'Django':
-      ensure => 'latest',
+      ensure   => 'latest',
       provider => 'yuavpip',
     }
 
@@ -75,9 +75,9 @@ Using a custom global PyPI repo
     }
 
     package { 'my_package':
-      ensure => 'latest',
+      ensure   => 'latest',
       provider => 'yuavpip',
-      require => Class['pip'], # Ensure custom repo is installed prior to my_package
+      require  => Class['pip'], # Ensure custom repo is installed prior to my_package
     }
 
 

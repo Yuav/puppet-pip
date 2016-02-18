@@ -1,6 +1,6 @@
 {
   "name": "yuav-pip",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "author": "Jon Skarpeteig",
   "summary": "Custom python pip provider that's less broken",
   "license": "Apache-2.0",
@@ -10,6 +10,11 @@
   "dependencies": [
     { "name": "stahnma-epel", "version_requirement": ">= 1.0.0" },
     { "name": "puppetlabs/stdlib", "version_requirement": ">= 3.0.0" }
+  ],
+  "tags": [
+    "python",
+    "pip",
+    "provider"
   ],
   "operatingsystem_support": [
     {
