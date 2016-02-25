@@ -35,6 +35,7 @@ describe 'pip' do
     let(:params) do
       {
         :index_url => 'http://devpi.fqdn:3141/repo/base/+simple/',
+        :extra_index_url => 'https://repo.fury.io/yuav/',
         :package_ensure => 'latest'
       }
     end
@@ -44,8 +45,8 @@ describe 'pip' do
 [global]
 trusted-host = devpi.fqdn
 index-url = http://devpi.fqdn:3141/repo/base/+simple/
-
-EOS
+extra-index-url = https://repo.fury.io/yuav/
+      EOS
     end
     it { is_expected.to contain_file('/etc/pip.conf').with_content(expected_content) }
     it { is_expected.to contain_package('pip').with_ensure('latest') }
