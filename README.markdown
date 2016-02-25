@@ -67,11 +67,24 @@ Ensure pip is installed with the latest version
       package_ensure => 'latest',
     }
 
-Using a custom global PyPI repo
+Installing a global extra index
 
     class { 'pip':
       package_ensure => 'latest',
-      pypi_repo => 'http://devpi.fqdn:3141/repo/base/+simple/',
+      extra_index_url => 'https://repo.fury.io/yuav/',
+    }
+
+    package { 'puppet-pip-test-project':
+      ensure   => 'latest',
+      provider => 'yuavpip',
+      require  => Class['pip'], # Ensure custom repo is installed prior to my_package
+    }
+
+Installing a custom global PyPI repo
+
+    class { 'pip':
+      package_ensure => 'latest',
+      index_url => 'http://devpi.fqdn:3141/repo/base/+simple/',
     }
 
     package { 'my_package':

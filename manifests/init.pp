@@ -15,11 +15,13 @@
 #
 class pip (
   $package_ensure = $::pip::params::package_ensure,
-  $pypi_repo = $::pip::params::pypi_repo,
+  $index_url = $::pip::params::index_url,
+  $extra_index_url = $::pip::params::extra_index_url
 ) inherits ::pip::params {
 
   validate_string($package_ensure)
-  validate_string($pypi_repo)
+  validate_string($index_url)
+  validate_string($extra_index_url)
 
   class { '::pip::install': } ->
   class { '::pip::config': } ->

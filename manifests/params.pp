@@ -5,5 +5,6 @@
 #
 class pip::params {
   $package_ensure = 'installed'
-  $pypi_repo = undef
+  $index_url = undef
+  $extra_index_url = undef
 }

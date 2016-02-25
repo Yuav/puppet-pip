@@ -22,20 +22,32 @@ describe 'pip' do
   end
 
   describe "empty global config without pypi repo argument" do
-    it { is_expected.to contain_file('/etc/pip.conf').with_content(/^# File Managed by Puppet$/) }
+    let(:expected_content) do
+      <<-EOS
+# File Managed by Puppet
+[global]
+      EOS
+    end
+    it { is_expected.to contain_file('/etc/pip.conf').with_content(expected_content) }
   end
 
   describe "should honor parameters" do
     let(:params) do
       {
-        :pypi_repo => 'http://devpi.fqdn:3141/repo/base/+simple/',
+        :index_url => 'http://devpi.fqdn:3141/repo/base/+simple/',
         :package_ensure => 'latest'
       }
     end
-    it { is_expected.to contain_package('pip').with_ensure('latest') }
-    it do
-      is_expected.to contain_file('/etc/pip.conf') \
-        .with_content("# File Managed by Puppet\n[global]\ntrusted-host = devpi.fqdn\nindex-url = http://devpi.fqdn:3141/repo/base/+simple/\n")
+    let(:expected_content) do
+      <<-EOS
+# File Managed by Puppet
+[global]
+trusted-host = devpi.fqdn
+index-url = http://devpi.fqdn:3141/repo/base/+simple/
+
+EOS
     end
+    it { is_expected.to contain_file('/etc/pip.conf').with_content(expected_content) }
+    it { is_expected.to contain_package('pip').with_ensure('latest') }
   end
 end

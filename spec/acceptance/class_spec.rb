@@ -1,22 +1,35 @@
 require 'spec_helper_acceptance'
 
 describe 'pip class' do
-  context 'default parameters' do
+  context 'global extra index url' do
     # Using puppet_apply as a helper
     it 'should work idempotently with no errors' do
       pp = <<-EOS
-        class { 'pip': }
-        package { 'Django':
+        class { 'pip':
+          package_ensure  => 'latest',
+          extra_index_url => 'https://repo.fury.io/yuav/'
+        }
+
+        package { 'puppet-pip-test-project':
           provider => 'yuavpip',
-          require => Class['pip'],
+          require  => Class['pip'],
         }
       EOS
 
       # Run it twice and test for idempotency
-      apply_manifest(pp, { :catch_failures => true, :debug => true})
+      apply_manifest(pp, {
+        :catch_failures => true,
+        :debug => true,
+        :trace => true,
+        :environment => {
+          # Workaround for bug: https://tickets.puppetlabs.com/browse/BKR-699
+          'PATH' => '/opt/puppet-git-repos/hiera/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games'
+        }
+      })
       apply_manifest(pp, {
         :catch_changes => true,
         :debug => true,
+        :trace => true,
         :environment => {
           # Workaround for bug: https://tickets.puppetlabs.com/browse/BKR-699
           'PATH' => '/opt/puppet-git-repos/hiera/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games'
@@ -33,4 +46,5 @@ describe 'pip class' do
     #  it { should be_installed.by('pip') }
     #end
   end
+
 end
