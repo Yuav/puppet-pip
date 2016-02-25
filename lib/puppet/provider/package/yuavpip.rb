@@ -34,14 +34,14 @@ Puppet::Type.type(:package).provide :yuavpip, :parent => :pip do
   # Execute a `pip` command.  If Puppet doesn't yet know how to do so,
   # try to teach it and if even that fails, raise the error.
   def lazy_pip(*args)
-    pip *args
+    pip(*args)
   rescue NoMethodError => e
-    if pathname = which(self.class.cmd)
+    if which(self.class.cmd)
       # @note From provider.rb; It is preferred if the commands are not entered with absolute paths as this allows puppet
       # to search for them using the PATH variable.
       # After pip has upgraded pip, the new path is in /usr/local/bin/pip, which needs to be looked up again. The below approach ensures this
       self.class.commands :pip => self.class.cmd
-      pip *args
+      pip(*args)
     else
       raise e, 'Could not locate the pip command.', e.backtrace
     end

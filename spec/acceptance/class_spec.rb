@@ -46,5 +46,4 @@ describe 'pip class' do
     #  it { should be_installed.by('pip') }
     #end
   end
-
 end
