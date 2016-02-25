@@ -1,9 +1,9 @@
 # File Managed by Puppet
 [global]
-<% if scope['pip::index_url'] != :undef -%>
+<% if scope['pip::index_url'] != :undef and scope['pip::index_url'] != nil -%>
 trusted-host = <%= URI("#{scope['pip::index_url']}").host %>
 index-url = <%= scope['pip::index_url'] %>
 <% end -%>
-<% if scope['pip::extra_index_url'] != :undef -%>
+<% if scope['pip::extra_index_url'] != :undef and scope['pip::extra_index_url'] != nil -%>
 extra-index-url = <%= scope['pip::extra_index_url'] %>
 <% end -%>
