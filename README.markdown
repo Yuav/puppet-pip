@@ -3,18 +3,6 @@ Puppet Pip module
 
 [![Build Status](https://travis-ci.org/Yuav/puppet-pip.svg)](https://travis-ci.org/yuav/puppet-pip)
 
-#### Table of Contents
-
-1. [Overview](#overview)
-2. [Module Description - What the module does and why it is useful](#module-description)
-3. [Setup - The basics of getting started with pip](#setup)
-    * [What pip affects](#what-pip-affects)
-    * [Setup requirements](#setup-requirements)
-    * [Beginning with pip](#beginning-with-pip)
-4. [Usage - Configuration options and additional functionality](#usage)
-
-## Overview
-
 Less broken Puppet package provider for pip. Can also install and configure pip
 
 ## Module Description
@@ -29,14 +17,6 @@ Installing this modules gives you a pip provider that works with;
  * Treat pip as a pip installable package
 
 ## Setup
-
-### What pip affects
-
-* A list of files, packages, services, or operations that the module will alter, impact, or execute on the system it's installed on.
-* This is a great place to stick any warnings.
-* Can be in list or paragraph form.
-
-### Setup Requirements
 
 If you don't use this module to manage python pip, it assumes pip is already installed and available in $PATH
 
@@ -53,7 +33,7 @@ and use it as a custom provider
       provider => 'yuavpip',
     }
 
-*Note that pip needs to be installed prior to using this provider.
+*Note that pip needs to be installed prior to using the provider as in this example.
 
 ## Usage
 
