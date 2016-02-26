@@ -77,3 +77,18 @@ Installing a custom global PyPI repo
 *Note: By default this module use the vendor version of pip (E.G 1.0 for Ubuntu 12.04),
 however global PyPI repo requires pip 6.0 or later. Since Puppet doesn't support ensure '>6.0',
 use 'latest' to ensure a recent enough version
+
+### Limitations
+
+# Acceptance testing with Beaker
+
+Due to bug: https://tickets.puppetlabs.com/browse/BKR-699 (Beaker adding /usr/bin in front of $PATH)
+
+there's an issue using this module in an acceptance test with ensure => 'latest'.
+
+The workaround is to override the Beaker set path in the test like so:
+
+    apply_manifest(pp, :catch_changes => true, :environment => {
+        'PATH' => '/opt/puppet-git-repos/hiera/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games'
+    })
+
