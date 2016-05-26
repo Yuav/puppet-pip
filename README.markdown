@@ -5,6 +5,8 @@ Puppet Pip module
 
 Less broken Puppet package provider for pip. Can also install and configure pip
 
+**NOTICE:** Features of this provider has been ported to Puppet core, and is available in Puppet 4.5.0
+
 ## Module Description
 
 The pip provider in Puppet is currently broken due to the fact that it's polling PyPI directly instead of relying on Pip from CLI
