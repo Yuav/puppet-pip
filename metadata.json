@@ -1,12 +1,12 @@
 {
-  "name": "yuav-pip",
+  "name": "onpuppet-pip",
   "version": "0.2.0",
   "author": "Jon Skarpeteig",
   "summary": "Custom python pip package provider that's less broken",
   "license": "Apache-2.0",
-  "source": "https://github.com/Yuav/puppet-pip.git",
-  "project_page": "https://github.com/Yuav/puppet-pip",
-  "issues_url": "https://github.com/Yuav/puppet-pip/issues",
+  "source": "https://github.com/onpuppet/puppet-pip.git",
+  "project_page": "https://github.com/onpuppet/puppet-pip",
+  "issues_url": "https://github.com/onpuppet/puppet-pip/issues",
   "dependencies": [
     { "name": "stahnma-epel", "version_requirement": ">= 1.0.0" },
     { "name": "puppetlabs/stdlib", "version_requirement": ">= 3.0.0" }
