@@ -8,7 +8,6 @@ script:
 - bundle exec rake lint
 - bundle exec rake spec SPEC_OPTS='--format documentation'
 - bundle exec rake metadata_lint
-- bundle exec rake rubocop
 matrix:
   fast_finish: true
   include:
@@ -68,7 +67,7 @@ deploy:
   provider: puppetforge
   user: onpuppet
   password:
-    secure: GzVv0NOZenAqm+I2dj1Qw81aruK5ypVEeeFhA9yVxgzxHaac0bbNcCH4uIR//cIPwakwDdAP7HS8ciQrD7RwbmFAFoOL141HsB0WNPZhO4BsJMrgzKiIq4ZN3dfc7lYyW5l7ZZeX23FqYyMpgRjJHmVCLeL0MkjQN9NqEMUXj8buhBkVQ3z9/eKZmSZeTPrhaDYFDQKH274zB/Rz3aw4nFf45PEfIP4Fi97BHws+dN6edSms7o53y+I1lgpLBjV2/VoL7K92GdKWReGv+EvfMQ0LOnLBsP426S1ST61afBbtFOfZM9GWdwMEKP72r4PJJV9wTIHQyECBlZz2wSWDOc1bYrXRhWdKtCgL5ob96Q46SJnlH7nJAZtrmSayfj3NHT+YUsPwDNbhHdtfrBWOYejdkTaVpsjGmdWmbUndA+q+3W1CUhiT9goD+/daC6xVZ+UlBuBaRcT4eDcKjb6UbfbXP3i/8C/O3yuYVxIxmVh/2t8yga4I729Ei8xA2YeNPf5W9vQJalJKHPFIEaPylv7yPCTkFGBIypI/XpjgTScRuf18r8uIJ1OpoPF1Ev3JhF/EG/Z7R1DSPXT2qVKqQCGknrcpejd4GnpYxGgAi/YeEc0Zba01ulThzsWOeMf1p5sSTk6Kok9Z8t596plcjKrdhtBbXc2Ub7I6KoCYu40=
+    secure: cc5V8MSC/sHIDP6H634UgU+gePFBUWjDSK2A83111ZanNP5zWtKj3u2cKDofcJGy/T+onLWOmAdjN/1exxNWQ5TIwSaIqwSoU44GKaU2q5zZGojprkcTu7GiEXO7Lm+6rP8lQmGI9+W9AZHZQcIQirH8ZnCcHAZZhQ9JGRpuSq+vs7yPom9e5ZC+arqMxCioXcP3/JMtuDTsSndsFGUgmKlZ1HciwjODtKB2ycB611XYIV0SXDR1uVQ4IKXwgcVkd71pk4bpf7khRDD2Otrlk47oTR5osa18qCR17z7pzGz2swlGDINz6YdW+XpXHyG3s1p2i+3j7uF0yzV0hT9egbzikELXqdXJJiATbVPWweVAhgpXQQgNsIIOk3kZXsMR9qoSedTDpVUWp3Cea+CkyepQz3YTKXitq346WumNjGShQWEg2pYRCsoDp6bdhSecT8MJJzJcVg0p04C2SM171dm5KVL6lFp8awbBw+bbscH/q68TgYYKpwJsSR16DKVtoXz3Zs3fOc/CnX4CV9dWtkjGAJ87IBly/qsWs6qVoP3ZRY50sKELx3S1SckBACd4NL4p7msViphNqbIYPNyqkNJ83yGdbOGNr+PcGcydRalYS5DyK/GT7smFINQW21AW3oMJh1+tF0X3cZid9LZw/yElMOPJSQMFLKqRJzHpbmI=
   on:
     tags: true
     all_branches: true

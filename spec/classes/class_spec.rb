@@ -5,7 +5,7 @@ describe 'pip' do
     on_supported_os.each do |os, facts|
       context "on #{os}" do
         let(:facts) do
-          facts
+          facts.merge(:osfamily => 'RedHat')
         end
 
         context "pip class without any parameters" do
@@ -22,6 +22,13 @@ describe 'pip' do
   end
 
   describe "empty global config without pypi repo argument" do
+    let(:facts) do
+      {
+        :osfamily => 'RedHat',
+        :operatingsystem => 'CentOS',
+        :operatingsystemrelease => '7'
+      }
+    end
     let(:expected_content) do
       <<-EOS
 # File Managed by Puppet
@@ -32,6 +39,13 @@ describe 'pip' do
   end
 
   describe "should honor parameters" do
+    let(:facts) do
+      {
+        :osfamily => 'RedHat',
+        :operatingsystem => 'CentOS',
+        :operatingsystemrelease => '7'
+      }
+    end
     let(:params) do
       {
         :index_url => 'http://devpi.fqdn:3141/repo/base/+simple/',
