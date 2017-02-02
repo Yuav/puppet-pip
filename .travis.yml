@@ -15,48 +15,6 @@ matrix:
     env: PUPPET_GEM_VERSION="~> 3.0" FUTURE_PARSER="yes"
   - rvm: 2.3.1
     env: PUPPET_GEM_VERSION="~> 4.0"
-  - rvm: default
-    sudo: required
-    dist: trusty
-    services: docker
-    env: BEAKER_set="ubuntu-1204"
-    bundler_args: --without development
-    script: sudo service docker restart ; sleep 10 && bundle exec rspec spec/acceptance/*_spec.rb
-  - rvm: default
-    sudo: required
-    dist: trusty
-    services: docker
-    env: BEAKER_set="ubuntu-1404"
-    bundler_args: --without development
-    script: sudo service docker restart ; sleep 10 && bundle exec rspec spec/acceptance/*_spec.rb
-  - rvm: default
-    sudo: required
-    dist: trusty
-    services: docker
-    env: BEAKER_set="debian-7"
-    bundler_args: --without development
-    script: sudo service docker restart ; sleep 10 && bundle exec rspec spec/acceptance/*_spec.rb
-  - rvm: default
-    sudo: required
-    dist: trusty
-    services: docker
-    env: BEAKER_set="debian-8"
-    bundler_args: --without development
-    script: sudo service docker restart ; sleep 10 && bundle exec rspec spec/acceptance/*_spec.rb
-  - rvm: default
-    sudo: required
-    dist: trusty
-    services: docker
-    env: BEAKER_set="centos-6"
-    bundler_args: --without development
-    script: sudo service docker restart ; sleep 10 && bundle exec rspec spec/acceptance/*_spec.rb
-  - rvm: default
-    sudo: required
-    dist: trusty
-    services: docker
-    env: BEAKER_set="centos-7"
-    bundler_args: --without development
-    script: sudo service docker restart ; sleep 10 && bundle exec rspec spec/acceptance/*_spec.rb
 notifications:
   email: true
 deploy:
