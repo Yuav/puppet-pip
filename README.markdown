@@ -1,7 +1,7 @@
 Puppet Pip module
 =================
 
-[![Build Status](https://travis-ci.org/Yuav/puppet-pip.svg)](https://travis-ci.org/yuav/puppet-pip)
+[![Build Status](https://travis-ci.org/onpuppet/puppet-pip.svg)](https://travis-ci.org/onpuppet/puppet-pip)
 
 Less broken Puppet package provider for pip. Can also install and configure pip
 
@@ -26,7 +26,7 @@ If you don't use this module to manage python pip, it assumes pip is already ins
 
 Just install the module:
 
-    puppet module install yuav-pip
+    puppet module install onpuppet-pip
 
 and use it as a custom provider
 
