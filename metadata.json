@@ -1,6 +1,6 @@
 {
   "name": "onpuppet-pip",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": "Jon Skarpeteig",
   "summary": "Custom python pip package provider that's less broken",
   "license": "Apache-2.0",
